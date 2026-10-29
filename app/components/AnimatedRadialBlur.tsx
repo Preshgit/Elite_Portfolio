@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { cn } from "@/lib/utils";
+import { glowGradient } from "./glow";
 
 type RadialBlurProps = {
   className?: string;
@@ -17,9 +18,7 @@ const AnimatedRadialBlur = ({
   followCursor = false,
   animate = false,
 }: RadialBlurProps) => {
-  const mouseX = useMotionValue(
-    typeof window !== "undefined" ? window.innerWidth / 2 : 0,
-  );
+  const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   const springConfig = { stiffness: 50, damping: 20 };
@@ -29,7 +28,7 @@ const AnimatedRadialBlur = ({
   useEffect(() => {
     if (!followCursor) return;
 
-    // Set initial position to top center immediately on mount/enable
+    // Start at top center
     mouseX.set(window.innerWidth / 2);
     mouseY.set(0);
 
@@ -75,26 +74,18 @@ const AnimatedRadialBlur = ({
           : {}
       }
       className={cn(
-        "pointer-events-none",
+        "pointer-events-none will-change-transform",
         !followCursor && "absolute -top-[150px] left-1/2 -translate-x-1/2",
-        "h-[1000px] w-[900px] rounded-full opacity-40 md:opacity-90 blur-[1px]",
+        "h-[1000px] w-[900px] rounded-full opacity-40 md:opacity-90",
         className,
       )}
     >
       <div
         className={cn(
-          "absolute left-1/2 h-[500px] w-[700px] -translate-x-1/2 rounded-full opacity-40 md:opacity-90 blur-[120px]",
+          "absolute left-1/2 -top-[120px] h-[740px] w-[940px] -translate-x-1/2 opacity-40 md:opacity-90",
           blurClassName,
         )}
-        style={{
-          background: `radial-gradient(
-            circle,
-            rgba(109,59,255,0.85) 0%,
-            rgba(91,46,255,0.65) 25%,
-            rgba(70,30,200,0.35) 50%,
-            rgba(0,0,0,0) 75%
-          )`,
-        }}
+        style={{ background: glowGradient }}
       />
     </motion.div>
   );

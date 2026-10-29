@@ -13,23 +13,25 @@ type NavbarProps = {
 function MobileNav({ isOpen, setIsOpen }: NavbarProps) {
   return (
     <div
-      className="flex items-center w-[114px] h-[66px] justify-center rounded-md gap-3 outline
-    outline-gray-100/20 bg-[#222B59] md:hidden"
+      className="flex h-14 items-center gap-2 rounded-full border border-white/10 bg-[#0a0812]/60 p-1.5 pr-3 backdrop-blur-md md:hidden"
     >
       <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
         <Link
           href={"/contact"}
-          className="bg-[#F8A308] w-[40px] h-[39px] rounded-md flex items-center justify-center"
+          aria-label="Contact"
+          className="flex size-11 items-center justify-center rounded-full bg-[#F8A308] text-black"
         >
-          <PhoneOutgoing strokeWidth={2.1} />
+          <PhoneOutgoing strokeWidth={2.1} className="size-5" />
         </Link>
       </motion.div>
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
+        className="flex size-10 items-center justify-center"
+        aria-label="Open menu"
         onClick={() => setIsOpen(true)}
       >
-        <Menu color="silver" size={30} />
+        <Menu color="white" size={26} />
       </motion.button>
     </div>
   );

@@ -1,16 +1,36 @@
 import type { Metadata } from "next";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 import Header from "./components/Header";
 import { jakarta, jost, satoshi, unbounded } from "./fonts";
 import Footer from "./components/Footer";
 import { cn } from "@/lib/utils";
-import PageTransitionOverlay from "./components/PageTransitionOverlay";
+import { site } from "@/lib/site";
+import PageLoader from "./components/PageLoader";
 import VimeoMiniPlayer from "./components/VimeoMiniPlayer";
+import MotionProvider from "./components/MotionProvider";
+import SmoothScroll from "./components/SmoothScroll";
+import PageFx from "./components/PageFx";
 
 export const metadata: Metadata = {
-  title: "Elite Ayomide",
-  description:
-    "Elite Ayomide is a crypto trader and mentor helping traders, investors, and brands grow with strategy, education, and risk-aware execution.",
+  metadataBase: new URL(site.url),
+  title: {
+    default: site.name,
+    template: `%s | ${site.name}`,
+  },
+  description: site.description,
+  openGraph: {
+    type: "website",
+    siteName: site.name,
+    title: site.name,
+    description: site.description,
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@eliteayomide",
+    creator: "@eliteayomide",
+  },
 };
 
 type RootLayoutProps = Readonly<{
@@ -29,14 +49,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
         satoshi.variable,
         jakarta.variable,
         "font-sans",
+        "fx",
       )}
     >
-      <body className="min-h-full flex flex-col max-w-7xl md:max-w-screen overflow-x-hidden bg-black">
-        <PageTransitionOverlay />
-        <Header />
-        {children}
-        <Footer />
-        <VimeoMiniPlayer />
+      <body className="min-h-full flex flex-col w-full overflow-x-hidden bg-black">
+        <MotionProvider>
+          <SmoothScroll />
+          <PageFx />
+          <PageLoader />
+          <Header />
+          {children}
+          <Footer />
+          <VimeoMiniPlayer />
+        </MotionProvider>
       </body>
     </html>
   );

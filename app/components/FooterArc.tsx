@@ -1,9 +1,9 @@
-"use client";
-import Ellipse from "@/assets/svgs/Ellipse 2990.svg";
+import Ellipse from "@/assets/svgs/footer-arc.svg";
 import ExternalLinkButton from "./ExternalLinkButton";
 import Image from "next/image";
 import clsx from "clsx";
-import { ArrowUp } from "lucide-react";
+import BackToTop from "./BackToTop";
+import { glowGradient } from "./glow";
 
 interface FooterArcProps {
   className?: string;
@@ -17,10 +17,16 @@ const FooterArc = ({ className }: FooterArcProps) => {
         className,
       )}
     >
+      <BackToTop className="absolute right-[clamp(1.25rem,4vw,3.5rem)] top-6 z-50 md:bottom-10 md:top-auto" />
       <div className="absolute flex max-h-[90%] pt-2 left-0 w-full  justify-center bottom-0">
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[400px] w-[1200px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 md:opacity-90 blur-[120px] bg-[radial-gradient(circle,rgba(109,59,255,0.85)_0%,rgba(91,46,255,0.65)_25%,rgba(70,30,200,0.35)_50%,rgba(0,0,0,0)_75%)]" />
-        <div className="relative w-screen md:bottom-[-10.3rem] bg-transparent lg:bottom-0 h-full">
-          <Ellipse className="w-screen h-full" />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[640px] w-[1440px] -translate-x-1/2 -translate-y-1/2 opacity-40 md:opacity-90"
+          style={{ background: glowGradient }}
+        />
+        {/* Wider than the screen on phones so the dome is tall enough for its content */}
+        <div data-fx="arc" className="relative h-full w-[240vw] shrink-0 bg-transparent sm:w-[160vw] md:bottom-[-10.3rem] md:w-screen lg:bottom-0">
+          <Ellipse className="aspect-[1440/675] h-auto w-full md:aspect-auto md:h-full" aria-hidden />
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2  -translate-y-1/2  z-50 space-y-5">
             <Image
               className="mx-auto"
@@ -29,10 +35,10 @@ const FooterArc = ({ className }: FooterArcProps) => {
               height={50}
               alt=""
             />
-            <p className="text-transparent unbounded bg-clip-text bg-gradient-to-b from-white to-blue-800 text-[14px] md:text-[15px] lg:text-[50px] text-center capitalize font-extrabold leading-[100%] tracking-[-0.06em]">
+            <p className="text-transparent unbounded bg-clip-text bg-gradient-to-b from-white to-blue-800 text-[26px] md:text-[36px] lg:text-[50px] text-center capitalize font-extrabold leading-[100%] tracking-[-0.06em]">
               Let&apos;s start your <br /> Trading Journey
             </p>
-            <p className="jost leading-[130%] tracking-[-0.02em] w-[220px] md:w-[508px] text-center text-[14px] md:text-[18px] lg:text-[25px] text-white/60 ">
+            <p className="jost leading-[130%] tracking-[-0.02em] w-[300px] md:w-[508px] text-center text-[16px] md:text-[18px] lg:text-[25px] text-white/60 ">
               Start trading with powerful tools, real-time insights, and a
               secure platform for better profits
             </p>
@@ -42,16 +48,6 @@ const FooterArc = ({ className }: FooterArcProps) => {
               className="mx-auto jakarta px-3 md:px-8 text-black py-1 md:py-2"
               textClassName="text-[15px]!"
             />
-            <div
-              className="relative bottom-[254px] left-[230px] sm:left-[260px] md:bottom-[310px] md:left-[500px] lg:left-[725px]"
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-            >
-              <div className="bg-[#3E1FE8] flex justify-center h-[50px] w-[50px] items-center  rounded-full">
-                <ArrowUp color="white" />
-              </div>
-            </div>
           </div>
         </div>
       </div>

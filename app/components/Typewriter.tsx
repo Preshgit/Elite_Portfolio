@@ -5,18 +5,15 @@ const word = "Trader.";
 
 const TypewriterText = () => {
   const [displayed, setDisplayed] = useState("");
-  const [done, setDone] = useState(false);
+  const done = displayed.length >= word.length;
 
   useEffect(() => {
-    if (displayed.length >= word.length) {
-      setDone(true);
-      return;
-    }
+    if (done) return;
     const timeout = setTimeout(() => {
       setDisplayed(word.slice(0, displayed.length + 1));
     }, 120);
     return () => clearTimeout(timeout);
-  }, [displayed]);
+  }, [displayed, done]);
 
   return (
     <span className="text-[#F8A308] relative">

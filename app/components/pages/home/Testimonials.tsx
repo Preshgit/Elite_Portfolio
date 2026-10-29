@@ -1,7 +1,5 @@
-"use client";
-import { useRef } from "react";
+import { Quote } from "lucide-react";
 import Headings from "../../headings";
-import SectionContainer from "../../SectionContainer";
 import SectionContent from "../../SectionContent";
 
 export interface Testimonial {
@@ -17,15 +15,16 @@ interface TestimonialsProps {
 }
 
 const StarRating = ({ rating = 5 }: { rating?: number }) => (
-  <div className="flex gap-0.5">
+  <div className="flex gap-0.5" role="img" aria-label={`${rating} out of 5 stars`}>
     {Array.from({ length: 5 }).map((_, i) => (
       <svg
         key={i}
-        width="14"
-        height="14"
+        aria-hidden
+        width="15"
+        height="15"
         viewBox="0 0 24 24"
         fill={i < rating ? "#F8A308" : "none"}
-        stroke={i < rating ? "#F8A308" : "#00000020"} // ← was #ffffff30
+        stroke={i < rating ? "#F8A308" : "#00000030"}
         strokeWidth="2"
       >
         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -34,116 +33,106 @@ const StarRating = ({ rating = 5 }: { rating?: number }) => (
   </div>
 );
 
+const initials = (name: string) =>
+  name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
 const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => (
-  <div className="bg-black/5 rounded-[20px] p-5 space-y-4 shrink-0 w-full md:max-h-113 min-h-80 flex flex-col justify-center">
-    {/* ↑ was bg-white/5 border-white/10 */}
-    <div className="flex items-center gap-3"></div>
-    <p className="jost text-black/60 text-[23px] leading-[120%] tracking-[-4%] font-light">
+  <figure className="flex w-[300px] shrink-0 flex-col rounded-[28px] border border-black/[0.08] bg-white p-7 shadow-[0_20px_50px_-30px_rgba(20,10,60,0.35)] sm:w-[380px]">
+    <div className="flex items-center justify-between">
+      <Quote aria-hidden className="size-8 fill-[#F8A308] text-[#F8A308]" />
+      <StarRating rating={testimonial.rating} />
+    </div>
+    <blockquote className="jost mt-6 flex-1 text-[19px] leading-[140%] tracking-[-0.01em] text-black/75 sm:text-[21px]">
       {testimonial.content}
-    </p>
-    {/* ↑ was text-white/60 */}
-    <p className="jakarta font-bold text-black text-[22px] leading-tight">
-      {testimonial.name}
-    </p>
-    <StarRating rating={testimonial.rating} />
-  </div>
+    </blockquote>
+    <figcaption className="mt-8 flex items-center gap-3 border-t border-black/[0.08] pt-5">
+      <span
+        aria-hidden
+        className="unbounded flex size-11 items-center justify-center rounded-full bg-linear-to-br from-[#3E1FE8] to-[#1a0f5c] text-[13px] font-semibold text-white"
+      >
+        {initials(testimonial.name)}
+      </span>
+      <span>
+        <span className="jakarta block text-[16px] font-bold text-black">{testimonial.name}</span>
+        {testimonial.handle && (
+          <span className="jost block text-[14px] text-black/45">{testimonial.handle}</span>
+        )}
+      </span>
+    </figcaption>
+  </figure>
 );
 
-
-const MarqueeColumn = ({
+/** One row that glides sideways forever; pauses on hover. */
+const MarqueeRow = ({
   items,
   reverse = false,
-  duration = "30s",
+  duration,
 }: {
   items: Testimonial[];
   reverse?: boolean;
-  duration?: string;
-}) => {
-  const doubled = [...items, ...items];
-  return (
-    <div className="relative overflow-hidden h-[600px]">
-      <div className="pointer-events-none absolute top-0 left-0 right-0 h-20 z-10 bg-gradient-to-b from-white to-transparent" />
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-20 z-10 bg-gradient-to-t from-white to-transparent" />
-      <div
-        className="flex flex-col gap-4"
-        style={{
-          animation: `${reverse ? "marqueeUp" : "marqueeDown"} ${duration} linear infinite`,
-        }}
-      >
-        {doubled.map((t, i) => (
-          <TestimonialCard key={i} testimonial={t} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-
-const MobileCarousel = ({ items }: { items: Testimonial[] }) => {
-  const ref = useRef<HTMLDivElement>(null);
-
-  return (
+  duration: string;
+}) => (
+  <div className="marquee-row relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
     <div
-      ref={ref}
-      className="flex relative flex-col gap-4 items-center overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-hide"
-      style={{ scrollbarWidth: "none" }}
+      className="marquee-track flex w-max gap-5 py-3"
+      style={{
+        animation: `${reverse ? "marqueeRight" : "marqueeLeft"} ${duration} linear infinite`,
+      }}
     >
-      <div className="pointer-events-none absolute top-0 left-0 right-0 h-20 z-10 bg-gradient-to-b from-white to-transparent" />
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-20 z-10 bg-gradient-to-t from-white to-transparent" />
-      {items.map((t, i) => (
-        <div key={i} className="snap-center shrink-0 w-[80vw] max-w-[320px]">
+      {/* Second copy makes the loop seamless; hidden from screen readers */}
+      {[...items, ...items].map((t, i) => (
+        <div key={i} aria-hidden={i >= items.length || undefined}>
           <TestimonialCard testimonial={t} />
         </div>
       ))}
     </div>
-  );
-};
+  </div>
+);
 
 const Testimonials = ({ testimonials }: TestimonialsProps) => {
-  // Split into 3 columns
-  const col1 = testimonials.filter((_, i) => i % 3 === 0);
-  const col2 = testimonials.filter((_, i) => i % 3 === 1);
-  const col3 = testimonials.filter((_, i) => i % 3 === 2);
+  const half = Math.ceil(testimonials.length / 2);
+  const rowA = testimonials.slice(0, half);
+  const rowB = testimonials.slice(half);
 
   return (
-    <SectionContainer id="testimonials" className="bg-white overflow-hidden">
-      {/* keyframes */}
+    <section id="testimonials" className="relative overflow-hidden bg-[#f6f5fb]">
       <style>{`
-        @keyframes marqueeDown {
-          0%   { transform: translateY(0); }
-          100% { transform: translateY(-50%); }
-        }
-        @keyframes marqueeUp {
-          0%   { transform: translateY(-50%); }
-          100% { transform: translateY(0); }
-        }
+        @keyframes marqueeLeft  { from { transform: translateX(0); }    to { transform: translateX(-50%); } }
+        @keyframes marqueeRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
       `}</style>
 
-      <SectionContent className="space-y-10">
-        <div className="space-y-5 text-center flex  items-center flex-col">
-          <Headings
-            text="Trusted and experienced power elite CUSTOMERS"
-            textClassName="text-base! leading-[170%]!"
-            headerClassName="flex flex-col gap-2 items-center md:flex md:flex-row md:items-center md:gap-3"
-          />
-          <h3 className="font-bold uppercase text-center jakarta text-[36px] md:text-[50px] leading-[113%] tracking-[-0.11em] text-black">
-            500+ Trusted Customers
-          </h3>
-        </div>
-
-        {/* DESKTOP — 3 marquee columns */}
-        <div className="hidden md:grid grid-cols-3 gap-4">
-          <MarqueeColumn items={col1} duration="28s" />
-          <MarqueeColumn items={col2} reverse duration="22s" />
-          <MarqueeColumn items={col3} duration="35s" />
-        </div>
-
-        {/* MOBILE — horizontal carousel */}
-        <div className="md:hidden">
-          <MobileCarousel items={testimonials} />
+      <SectionContent className="pb-0! md:pb-0!">
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-5">
+            <Headings
+              text="What clients say"
+              className="bg-[#F8A308]!"
+              textClassName="text-black/70"
+            />
+            <h2
+              data-fx="words"
+              className="unbounded text-balance text-[34px] font-extrabold leading-[105%] tracking-[-0.07em] text-black md:text-[52px]"
+            >
+              500+ trusted customers
+            </h2>
+          </div>
+          <p data-fx="rise" className="jost max-w-[36ch] text-[18px] leading-[140%] text-black/55 md:text-[20px]">
+            Traders, students and brands who have worked with Elite Ayomide, in
+            their own words.
+          </p>
         </div>
       </SectionContent>
-    </SectionContainer>
+
+      <div className="space-y-2 pb-16 pt-12 md:pb-24 md:pt-14">
+        <MarqueeRow items={rowA} duration="55s" />
+        <MarqueeRow items={rowB.length ? rowB : rowA} reverse duration="65s" />
+      </div>
+    </section>
   );
 };
 

@@ -50,7 +50,11 @@ const nextConfig = {
     }
     return config;
   },
-  allowedDevOrigins: [" http://172.20.10.3:3000"],
+  allowedDevOrigins: ["172.20.10.3"],
+  images: {
+    // Serve modern, smaller image formats when the browser supports them
+    formats: ["image/avif", "image/webp"],
+  },
 };
 
 export default nextConfig;
