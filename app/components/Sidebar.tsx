@@ -20,14 +20,14 @@ function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsOpen(false)}
-            className="h-screen fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+            className="pointer-events-auto h-screen fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
           />
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 w-full h-screen bg-blue-950 z-999 flex flex-col p-6 gap-4 md:hidden"
+            className="pointer-events-auto fixed top-0 right-0 w-full h-screen bg-[#07060c] z-999 flex flex-col p-6 gap-4 md:hidden"
           >
             <div className="flex items-center justify-between">
               <Image
@@ -37,11 +37,12 @@ function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
                 height={47}
                 style={{ width: "auto", height: "auto" }}
               />
-              <button onClick={() => setIsOpen(false)}>
+              <button aria-label="Close menu" onClick={() => setIsOpen(false)}>
                 <X color="white" size={24} />
               </button>
             </div>
-            <nav className="flex flex-col mx-auto justify-center h-screen w-full items-center gap-[1.4em] unbounded text-[18px] font-semibold capitalize text-white mt-8">
+            <div aria-hidden className="pointer-events-none absolute left-1/2 top-0 h-[60%] w-[140%] -translate-x-1/2" style={{ background: "radial-gradient(closest-side, rgba(109,59,255,0.45), transparent)" }} />
+            <nav className="relative mt-8 flex h-screen w-full flex-col items-center justify-center gap-[1.4em] unbounded text-[26px] font-semibold capitalize text-white">
               {[
                 { href: "/", label: "Home" },
                 { href: "/about-me", label: "About Me" },

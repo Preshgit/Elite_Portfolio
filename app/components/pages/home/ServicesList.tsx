@@ -1,85 +1,64 @@
-"use client";
-import { useState } from "react";
+import Image, { type StaticImageData } from "next/image";
 import ExternalLinkButton from "../../ExternalLinkButton";
-
 
 export interface ServiceItem {
   title: string;
   description?: string;
   href?: string;
   ctaLabel?: string;
+  image: string | StaticImageData;
+  imagePosition?: string;
 }
-
-interface ServiceRowProps extends ServiceItem {
-  index: number;
-}
-
-// ─── Single Row ───────────────────────────────────────────────────────────────
 
 const ServiceRow = ({
-  index,
   title,
   description,
   href,
   ctaLabel = "Book Me Now",
-}: ServiceRowProps) => {
-  const [active, setActive] = useState(false);
-
-  return (
-    <div
-      className={`h-50 group flex flex-col w-[100%] md:flex-row items-center md:items-center gap-4 md:gap-3 justify-center px-6 py-5 border-b border-white/10 cursor-default transition-colors duration-300 ${active ? "bg-white/5" : "bg-transparent"
-        }`}
-      onMouseEnter={() => {
-        setActive(true);
-      }}
-      onMouseLeave={() => setActive(false)}
-    >
-      <div className="flex items-start w-full gap-3  md:gap-5">
-        <span className="text-white/30 font-extrabold w-[20px]  capitalize jakarta  mt-1 select-none">
-          {String(index).padStart(2, "0")}
-        </span>
-        <div className="flex flex-col gap-3  md:gap-1">
-          <span className="text-white/70 jakarta font-extrabold text-[17px] md:text-3xl tracking-[-6%] leading-[113%] transition-all duration-150">
-            {title}
-          </span>
-          {description && (
-            <span className="text-white/70 text-[16px] md:text-[25px] font-normal jost tracking-[-4%] leading-[120%]">
-              {description}
-            </span>
-          )}
-        </div>
-      </div>
+  image,
+  imagePosition = "object-center",
+}: ServiceItem) => (
+  <li className="group grid items-center gap-6 border-b border-white/10 py-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] md:gap-12 md:py-12">
+    <div data-fx="rise" className="order-2 md:order-1">
+      <h3 className="jakarta text-[24px] font-extrabold leading-[113%] tracking-[-0.05em] text-white/85 transition-colors duration-150 group-hover:text-white md:text-[34px]">
+        {title}
+      </h3>
+      {description && (
+        <p className="jost mt-3 max-w-[40ch] text-[17px] leading-[135%] text-white/60 md:text-[21px]">
+          {description}
+        </p>
+      )}
       {href && (
-        <div
-          className={`transition-opacity duration-300 mx-auto justify-center md:justify-end flex w-full ${active ? "opacity-100" : "opacity-0"
-            }`}
-        >
-          <ExternalLinkButton
-            href={href}
-            text={ctaLabel}
-            className="md:w-54 w-full gap-3.75!"
-            textClassName="text-base!"
-          />
-        </div>
+        <ExternalLinkButton
+          href={href}
+          text={ctaLabel}
+          className="mt-7 w-full px-6 gap-3.75! sm:w-auto"
+          textClassName="text-base!"
+        />
       )}
     </div>
-  );
-};
-
-// ─── List ────────────────────────────────────────────────────────────────────
-
-interface ServiceListProps {
-  services: ServiceItem[];
-}
-
-const ServiceList = ({ services }: ServiceListProps) => {
-  return (
-    <div className="w-full border-t border-white/10">
-      {services.map((service, i) => (
-        <ServiceRow key={i} index={i + 1} {...service} />
-      ))}
+    <div
+      data-fx="wipe"
+      className="relative order-1 h-52 overflow-hidden rounded-3xl border border-white/10 md:order-2 md:h-64"
+    >
+      <Image
+        src={image}
+        alt=""
+        fill
+        sizes="(min-width: 780px) 45vw, 100vw"
+        className={`object-cover ${imagePosition} transition-transform duration-700 ease-out group-hover:scale-105`}
+      />
+      <div className="absolute inset-0 bg-linear-to-tr from-[#3c1ede]/30 via-transparent to-transparent" />
     </div>
-  );
-};
+  </li>
+);
+
+const ServiceList = ({ services }: { services: ServiceItem[] }) => (
+  <ul className="w-full border-t border-white/10">
+    {services.map((service) => (
+      <ServiceRow key={service.title} {...service} />
+    ))}
+  </ul>
+);
 
 export default ServiceList;

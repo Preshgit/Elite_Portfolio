@@ -1,35 +1,27 @@
 import type { Metadata } from "next";
 import FooterArc from "./components/FooterArc";
-import Hero from "./components/Hero";
 import SectionContainer from "./components/SectionContainer";
 import FAQ from "./components/pages/home/Faq";
-import HomePageHero from "./components/pages/home/Hero";
+import HeroScene from "./components/pages/home/HeroScene";
 import Services from "./components/pages/home/Services";
 import Testimonials from "./components/pages/home/Testimonials";
 import TrackRecord from "./components/pages/home/TrackRecord";
-import TradingHistory from "./components/pages/home/TradingHistory";
+import PayoutDesk from "./components/pages/home/PayoutDesk";
 import AboutMe from "./components/pages/home/aboutMe";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Elite Ayomide",
-  description:
-    "Elite Ayomide is a crypto trader and mentor helping traders, investors, and brands grow with strategy, education, and risk-aware execution.",
+  alternates: { canonical: "/" },
 };
 
 export default function Page() {
   return (
-    <SectionContainer id="hero" className="">
-      <Hero
-        animate={true}
-        followCursor={false}
-        className="min-h-screen overflow-hidden lg:min-h-screen flex items-center lg:flex-col lg:justify-center relative"
-      >
-        <HomePageHero />
-      </Hero>
+    <SectionContainer id="home" className="">
+      <HeroScene />
 
       <AboutMe />
       <TrackRecord />
-      <TradingHistory />
+      <PayoutDesk />
       <Services />
       <Testimonials
         testimonials={[
@@ -79,7 +71,6 @@ export default function Page() {
       />
       <FAQ
         items={[
-
           {
             question: "What services do you offer?",
             answer: [
@@ -102,15 +93,20 @@ export default function Page() {
           {
             question: "How can clients get started?",
             answer: [
-              "Send us an email: EliteAyomide@gmail.com",
+              `Send us an email: ${site.email}`,
               "Book a one-on-one session via the contact page.",
-              "Send us a direct Telegram DM on @realeliteayomide.",
-              "Send us a WhatsApp DM on +2347042161165 or +2347065000143.",
+              `Send us a direct Telegram DM on @${site.telegram}.`,
+              `Send us a WhatsApp DM on ${site.phones.join(" or ")}.`,
             ],
           },
           {
             question: "What are your rates or engagement models?",
-            answer: ["Lifetime Mentorship: $100(One time fee)", "Community Strategy & Management: $500 per month", "Branding/Promotion: $15p per month"]
+            answer: [
+              "Lifetime Mentorship: $100 (one-time fee)",
+              "Community Strategy & Management: $500 per month",
+              // TODO: confirm this price with the client ("$15p" in the original)
+              "Branding/Promotion: $15p per month",
+            ],
           },
         ]}
       />

@@ -1,20 +1,12 @@
-"use client";
-
 import Headings from "../../headings";
 import Link from "next/link";
 import SectionContainer from "../../SectionContainer";
 import { Send } from "lucide-react";
 import Check from "@/assets/svgs/check.svg";
 import TypewriterText from "../../Typewriter";
-import dynamic from "next/dynamic";
+import LazyGlobe from "../../LazyGlobe";
 import SectionContent from "../../SectionContent";
-
-const World = dynamic(
-  () => import("@/components/ui/globe").then((m) => m.World),
-  {
-    ssr: false,
-  },
-);
+import { site } from "@/lib/site";
 
 const AboutMe = () => {
   const globeConfig = {
@@ -411,62 +403,64 @@ const AboutMe = () => {
   ];
 
   return (
-    <SectionContainer id="aboutMe" className="bg-black">
+    <SectionContainer id="aboutMe" className="relative overflow-hidden bg-black">
       <SectionContent>
-        <div className="md:h-19">
-          <Headings text="About Me" textClassName="text-[#D9D9D9]" />
-          <div className="border-b-2 border-gray-200/10 h-15  w-[96%] m-auto " />
-        </div>
-        <section className="flex flex-col justify-center w-full m-auto py-4">
-          <div className=" flex flex-col-reverse p-5 py-16 lg:grid gap-3 lg:grid-cols-[450px_1fr] xl:grid-cols-[613px_1fr] items-center  w-full justify-end h-fit">
-            <div className="w-full h-full hidden lg:block lg:p-10 xl:p-0">
-              <World data={sampleArcs} globeConfig={globeConfig} />
-            </div>
-            <div className="order-first md:order-last">
-              <h3 className="unbounded uppercase text-[30px] md:text-[40px] xl:text-[45px] font-bold leading-[113%] tracking-[-11%] text-white">
-                Who is <span className="text-[#F8A308]">Elite ayomide?</span>
-              </h3>
-              <div className="h-17.5">
-                <h3
-                  className={`unbounded text-[30px] md:text-[40px] xl:text-[45px] font-bold leading-[107%] tracking-[-8%] text-white `}
-                >
-                  A <TypewriterText />
-                </h3>
-              </div>
-              <p className="jost text-[16px] md:text-[25px] leading-[120%] tracking-[-4%] text-gray-500  max-w-200 relative">
-                A Crypto Trader with 6 years of experience, helping traders and
-                investors navigate the trading space profitably with information
-                and education.
-              </p>
-
-              <div className="grid md:grid-cols-2 py-[2em] text-[10px] md:text-[16px] gap-3">
-                {aboutHighlights.map((highlight) => (
-                  <div key={highlight} className="flex items-center gap-3">
-                    <div className="bg-[#F8A308] h-[18px] md:h-[23px] flex items-center w-[18px] md:w-[27px] justify-center rounded-full">
-                      <Check />
-                    </div>
-                    <h4 className="jost text-[14px] md:text-[20px] leading-[120%] tracking-[4%] text-gray-500">
-                      {highlight}
-                    </h4>
-                  </div>
-                ))}
-              </div>
-
-              <Link
-                href="/about-me"
-                className="jost bg-white rounded-full py-[1.3em] flex items-center justify-center px-[2.8em] font-semibold flex items-center gap-3 mt-4 w-full md:max-w-[250px]"
-              >
-                <Send
-                  fill="black"
-                  strokeWidth={1}
-                  size={16}
-                  className="rotate-[280deg]"
-                />{" "}
-                <h3>More About Me</h3>
-              </Link>
-            </div>
+        <Headings text="About Me" textClassName="text-[#D9D9D9]" />
+        <div className="mt-6 border-b border-white/10" />
+        <div className="grid items-center gap-12 pt-16 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+          <div data-fx="rise" className="relative hidden aspect-square w-full lg:block">
+            <div
+              aria-hidden
+              className="absolute inset-[8%] rounded-full"
+              style={{
+                background:
+                  "radial-gradient(closest-side, rgba(109,59,255,0.35), rgba(70,30,200,0.12) 60%, transparent 100%)",
+              }}
+            />
+            <div aria-hidden className="absolute inset-[4%] rounded-full border border-white/10" />
+            <LazyGlobe data={sampleArcs} globeConfig={globeConfig} />
           </div>
-        </section>
+          <div>
+            <h2
+              data-fx="words"
+              className="unbounded text-balance text-[30px] font-bold uppercase leading-[110%] tracking-[-0.08em] text-white md:text-[44px] xl:text-[52px]"
+            >
+              Who is <span className="text-[#F8A308]">Elite Ayomide?</span>
+            </h2>
+            <p className="unbounded mt-2 h-[1.2em] text-[30px] font-bold leading-[110%] tracking-[-0.06em] text-white md:text-[44px] xl:text-[52px]">
+              A <TypewriterText />
+            </p>
+            <p
+              data-fx="rise"
+              className="jost mt-6 max-w-[38ch] text-pretty text-[17px] leading-[140%] tracking-[-0.02em] text-white/65 md:text-[24px]"
+            >
+              A crypto trader with {site.stats.yearsExperience} years of experience,
+              helping traders and investors navigate the trading space profitably
+              with information and education.
+            </p>
+
+            <ul data-fx="stagger" className="mt-10 grid gap-x-6 gap-y-4 sm:grid-cols-2">
+              {aboutHighlights.map((highlight) => (
+                <li key={highlight} className="flex items-center gap-3">
+                  <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[#F8A308]">
+                    <Check />
+                  </span>
+                  <span className="jost text-[16px] leading-[120%] text-white/70 md:text-[19px]">
+                    {highlight}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href="/about-me"
+              className="jost mt-12 inline-flex h-14 w-full items-center justify-center gap-3 rounded-full bg-white px-10 font-semibold text-black transition-transform duration-150 hover:-translate-y-0.5 active:scale-[0.97] sm:w-auto"
+            >
+              <Send fill="black" strokeWidth={1} size={16} className="rotate-[280deg]" />
+              More About Me
+            </Link>
+          </div>
+        </div>
       </SectionContent>
     </SectionContainer>
   );

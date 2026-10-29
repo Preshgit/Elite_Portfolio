@@ -1,86 +1,93 @@
 "use client";
 
-import { StaticImageData } from "next/image";
 import CountUp from "react-countup";
+import Image from "next/image";
 import Headings from "../../headings";
 import SectionContainer from "../../SectionContainer";
-import Image from "next/image";
-import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
-import CoinIcon from "@/assets/svgs/Img7.svg";
 import SectionContent from "../../SectionContent";
+import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
+import { site } from "@/lib/site";
 
 const records = [
   {
-    value: 800,
+    value: site.stats.tradesCompleted,
     title: "Total Trades",
-    useBlur: false,
-    image: "/Vector 7729.png",
-    showIcons: false,
-    isFull: true,
+    image: "/e9.jpg",
+    position: "object-[50%_70%]",
   },
   {
-    value: 70,
+    value: site.stats.winRate,
+    suffix: "%",
     title: "Win Rate",
     image: "/win.jpg",
-    useBlur: true,
-    showIcons: false,
+    position: "object-center",
   },
   {
-    value: 20000,
-    useBlur: true,
-    title: "crypto community ",
+    value: site.stats.community,
+    title: "Crypto Community",
     image: "/student.jpg",
-    showIcons: false,
+    position: "object-center",
   },
   {
-    value: 15,
-    useBlur: true,
+    value: site.stats.brandsPartnered,
     title: "Brands Partnered",
     image: "/star.jpg",
-    showIcons: true,
+    position: "object-center",
+    showBrands: true,
   },
+];
+
+const brands = [
+  { id: 1, name: "", designation: "Bybit", image: "/bybit.png" },
+  { id: 2, name: "", designation: "Binolla", image: "/binolla.png" },
+  { id: 3, name: "", designation: "MEXC", image: "/mexc.png" },
+  { id: 4, name: "", designation: "Tradelocker", image: "/trade_locker.jpg" },
+  { id: 5, name: "Muesli Swap", designation: "Muesli Swap", image: "/muesli_swap.jpg" },
+  { id: 6, name: "Binomo", designation: "Binomo", image: "/binomo.png" },
 ];
 
 const TrackRecord = () => {
   return (
-    <SectionContainer className="bg-black" id="track-record">
-      <div className="ml-auto block absolute right-0">
-        <CoinIcon className="ml-auto lg:block h-32 w-32 hidden animate-bounce [animation-duration:3s]" />
-      </div>
-      <SectionContent className="relative flex flex-col gap-[1em] md:gap-0 space-y-0">
-        <div className="min-h-19 md:space-y-4 space-y-10">
-          <Headings
-            textClassName="text-white"
-            text="Track Record At A Glance"
-          />
-          <div className="flex flex-col space-y-5 p-5 py-10 md:flex lg:flex-row py-3 gap-y-4 gap-x-8 items-start border-b border-slate-50/10 md:items-center w-full md:justify-between">
-            <div className="space-y-5 w-full text-white  flex flex-col lg:flex-row gap-3 md:gap-0 lg:items-start lg:items-center items-start lg:gap-[0em] justify-start lg:justify-between">
-              <div className="flex items-center gap-x-3">
-                <h3 className="unbounded leading-[113%] text-[#D9D9D9] tracking-[-11%] text-[20px] sm:text-[26px] md:text-[50px] font-extrabold">
-                  938+
-                </h3>
-                <small className="satoshi text-base text-[#fafafa]/50 w-full  md:max-w-[130px]">
-                  Crypto Trades Completed
-                </small>
-              </div>
-              <div className="flex items-center gap-x-3">
-                <h3 className="unbounded leading-[113%] text-[#D9D9D9] tracking-[-11%] text-[26px] md:text-[50px] font-extrabold">
-                  6+
-                </h3>
-                <small className="satoshi text-base text-[#fafafa]/50">
-                  Years in the industry
-                </small>
-              </div>
+    <SectionContainer className="relative overflow-hidden bg-black" id="track-record">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/coin.svg"
+        alt=""
+        loading="lazy"
+        data-fx="parallax"
+        data-speed="30"
+        className="pointer-events-none absolute right-[3%] top-24 hidden h-32 w-32 lg:block"
+      />
+      <SectionContent>
+        <Headings textClassName="text-white" text="Track Record At A Glance" />
+        <div className="mt-10 flex flex-col gap-10 border-b border-white/10 pb-12 lg:flex-row lg:items-end lg:justify-between">
+          <div data-fx="stagger" className="flex flex-wrap items-center gap-x-12 gap-y-6">
+            <div className="flex items-center gap-x-3">
+              <span className="unbounded text-[40px] font-extrabold leading-none tracking-[-0.08em] text-[#D9D9D9] md:text-[56px]">
+                {site.stats.tradesCompleted}+
+              </span>
+              <span className="satoshi max-w-[130px] text-base leading-tight text-white/55">
+                Crypto Trades Completed
+              </span>
             </div>
-            <div className="max-w-[629px] mr-auto">
-              <p className="unbounded text-[25px] text-[#FAFAFA]/90 leading-[142%] tracking-[-6%]">
-                Words are futile without evidence. My results are loud, not
-                silent. Scroll to discover the magic.
-              </p>
+            <div className="flex items-center gap-x-3">
+              <span className="unbounded text-[40px] font-extrabold leading-none tracking-[-0.08em] text-[#D9D9D9] md:text-[56px]">
+                {site.stats.yearsExperience}+
+              </span>
+              <span className="satoshi max-w-[110px] text-base leading-tight text-white/55">
+                Years in the industry
+              </span>
             </div>
           </div>
+          <p
+            data-fx="words"
+            className="unbounded max-w-[24ch] text-balance text-[22px] leading-[135%] tracking-[-0.05em] text-white/90 md:text-[28px]"
+          >
+            Words are futile without evidence. My results are loud, not silent.
+          </p>
         </div>
-        <div className="grid gap-6 lg:px-0 px-3 py-2 md:py-[4em] md:grid-cols-2 lg:grid-cols-4 lg:items-center lg:justify-between">
+
+        <div data-fx="stagger" className="grid gap-5 pt-14 sm:grid-cols-2 lg:grid-cols-4">
           {records.map((record) => (
             <RecordCard key={record.title} {...record} />
           ))}
@@ -92,94 +99,37 @@ const TrackRecord = () => {
 
 export default TrackRecord;
 
-interface ReportProps {
+interface RecordCardProps {
   title: string;
   value: number;
-  image: StaticImageData | string;
-  useBlur: boolean;
-  showIcons: boolean;
-  isFull?: boolean;
+  image: string;
+  position: string;
+  suffix?: string;
+  showBrands?: boolean;
 }
 
-function RecordCard({
-  isFull,
-  showIcons,
-  useBlur,
-  title,
-  value,
-  image,
-}: ReportProps) {
-  const brands = [
-    {
-      id: 1,
-      name: "",
-      designation: "Bybit",
-      image: "/bybit.png",
-    },
-    {
-      id: 2,
-      name: "",
-      designation: "Binolla",
-      image: "/binolla.png",
-    },
-    {
-      id: 3,
-      name: "",
-      designation: "MEXC",
-      image: "/mexc.png",
-    },
-    {
-      id: 4,
-      name: "",
-      designation: "Tradelocker",
-      image: "/trade_locker.jpg",
-    },
-    {
-      id: 5,
-      name: "Muesli Swap",
-      designation: "Muesli Swap",
-      image: "/muesli_swap.jpg",
-    },
-    {
-      id: 6,
-      name: "Binomo",
-      designation: "Binomo",
-      image: "/binomo.png",
-    },
-    ,
-  ];
-
+function RecordCard({ title, value, image, position, suffix = "+", showBrands }: RecordCardProps) {
   return (
-    <div className="rounded-[30px] overflow-hidden border-2 border-slate-50/20 relative w-full h-[326.75px] space-y-12">
+    <div className="group relative h-[340px] overflow-hidden rounded-[28px] border border-white/15 bg-[#1C1B20] shadow-[0_24px_60px_-20px_rgba(0,0,0,0.8)]">
       <Image
         src={image}
-        className={`${isFull ? "object-contain top-40" : " h-full object-cover"} rounded-b-[30px] w-full absolute`}
-        width={308.08}
-        height={200}
-        alt={title}
-        preload
-        loading="eager"
+        alt=""
+        fill
+        sizes="(min-width: 1024px) 25vw, (min-width: 600px) 50vw, 100vw"
+        className={`object-cover ${position} transition-transform duration-700 ease-out group-hover:scale-105`}
       />
-      {useBlur ? (
-        <div className="inset-0 absolute bg-black h-full rounded-[30px] opacity-90" />
-      ) : (
-        <div className="bg-[#1C1B20] rounded-[30px] h-full z-30" />
-      )}
-      <div className="z-40 absolute top-3 text-white p-3">
-        <div className="flex items-center text-[26px] sm:text-[26px] lg:text-[50px] unbounded gap-x-1">
-          <CountUp
-            start={0}
-            end={value}
-            className="unbounded leading-[130%] z-9999 font-extrabold tracking-[-2%] text-[35px] lg:text-[40px]"
-          />
-          +
+      {/* Scrim only behind the numbers; the rest of the photo stays visible */}
+      <div className="absolute inset-x-0 top-0 h-[62%] bg-linear-to-b from-black/90 via-black/55 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-black/60 to-transparent" />
+      <div className="relative p-6 text-white">
+        <div className="unbounded flex items-baseline gap-1 text-[38px] font-extrabold leading-none tracking-[-0.04em] lg:text-[44px]">
+          <CountUp end={value} enableScrollSpy scrollSpyOnce separator="," />
+          <span className="text-[#F8A308]">{suffix}</span>
         </div>
-        <p className="jost text-white/60 leading-[130%] z-50  tracking-[-2%] text-[25px] lg:text-[25px]">
-          {title}
-        </p>
+        <p className="jost mt-3 text-[20px] leading-tight text-white/75">{title}</p>
       </div>
-      {showIcons && (
-        <div className="flex flex-row bottom-8 left-4 absolute w-full">
+      {showBrands && (
+        <div className="absolute bottom-6 left-6 flex flex-row">
           <AnimatedTooltip items={brands} />
         </div>
       )}

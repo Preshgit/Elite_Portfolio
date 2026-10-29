@@ -48,7 +48,7 @@ function AccordionTrigger({
         {...props}
       >
         {children}
-        <div className="h-12 w-12 border border-white/20 rounded-full flex items-center justify-center">
+        <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-white/20 text-white transition-colors duration-200 group-hover/accordion-trigger:border-[#F8A308]/70 group-aria-expanded/accordion-trigger:border-[#F8A308] group-aria-expanded/accordion-trigger:bg-[#F8A308] group-aria-expanded/accordion-trigger:text-black">
           <PlusIcon data-slot="accordion-trigger-icon" className="mx-auto pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden" />
           <MinusIcon data-slot="accordion-trigger-icon" className="mx-auto pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline" />
         </div>

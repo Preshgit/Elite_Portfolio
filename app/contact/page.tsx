@@ -1,114 +1,114 @@
-import { ArrowRight, Mail, MailOpenIcon, MapPin, MessageSquareMore, MessagesSquareIcon, PhoneCall, UserIcon } from "lucide-react";
-import Hero from "../components/Hero";
+import { ArrowUpRight, Mail, MessagesSquareIcon, PhoneCall, Send } from "lucide-react";
 import FooterArc from "../components/FooterArc";
+import Headings from "../components/headings";
+import { glowGradient } from "../components/glow";
+import ContactForm from "./ContactForm";
+import { mailtoUrl, site, telegramUrl, whatsappUrl } from "@/lib/site";
 
 const contactDetails = [
   {
-    label: "Phone",
-    value: "+234 915 666 9634",
-    href: "tel:+2349156669634",
-    icon: PhoneCall,
+    label: "WhatsApp",
+    value: "Chat with me on WhatsApp",
+    href: whatsappUrl,
+    icon: MessagesSquareIcon,
+  },
+  {
+    label: "Telegram",
+    value: `@${site.telegram}`,
+    href: telegramUrl,
+    icon: Send,
   },
   {
     label: "Email",
-    value: "logritardev@icloud.com",
-    href: "mailto:logritardev@icloud.com",
+    value: site.email,
+    href: mailtoUrl,
     icon: Mail,
   },
   {
-    label: "Address",
-    value: "456 Garden Lane, Los Angeles, CA, USA",
-    href: "#contact-form",
-    icon: MapPin,
+    label: "Phone",
+    value: site.phones.join(" · "),
+    href: `tel:${site.phones[0]}`,
+    icon: PhoneCall,
   },
 ];
 
 export default function ContactPage() {
   return (
-    <main className="relative overflow-hidden bg-black text-white">
-      <Hero className="h-[45vh] md:h-[55vh] lg:h-[70vh]" />
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 bg-transparent px-6 md:px-8 lg:flex-row lg:justify-between lg:px-10">
-        <div className="w-full">
-          <h2 className="unbounded text-3xl font-bold leading-[113%] tracking-[-4%] text-white md:text-4xl lg:text-[50px] lg:tracking-[-11%]">Let’s Build the</h2>
-          <h2 className="unbounded text-3xl font-bold leading-[113%] tracking-[-4%] text-white md:text-4xl lg:text-[50px] lg:tracking-[-11%]">Future Together.</h2>
-        </div>
-        <div className="max-w-2xl lg:max-w-xl">
-          <p className="jost text-base font-light leading-[140%] tracking-normal md:text-xl md:tracking-[-2%] lg:text-2xl lg:leading-[120%] lg:tracking-[-4%]">Partner, collaborate, or engage to drive meaningful impact and create lasting value across sectors and communities.</p>
-        </div>
-      </div>
-      <section className="relative mx-auto flex w-full max-w-7xl flex-col gap-10 bg-black px-6 pb-20 pt-16 md:gap-12 md:px-8 md:pt-24 lg:gap-16 lg:px-0 lg:pt-40">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:items-end">
-          <div className="relative space-y-8 border-l-2 border-[#CC9933] h-full" style={{
-            background: "url(/star.jpg)",
-            backgroundPosition: "center center"
-          }}>
-            <div className="bg-black h-full opacity-85 inset-0 absolute" />
-            <div className=" h-full z-40 relative flex justify-center py-4 space-y-5 flex-col pl-4">
+    <main className="relative overflow-clip bg-black text-white">
+      <section className="relative isolate">
+        <div
+          aria-hidden
+          className="absolute left-1/2 -top-[320px] -z-10 h-[1000px] w-[1300px] -translate-x-1/2"
+          style={{ background: glowGradient }}
+        />
+        <div className="grain" />
+
+        <div className="mx-auto max-w-7xl gutter pb-16 pt-32 md:pb-24 md:pt-40">
+          {/* Heading */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:items-end">
+            <div>
+              <Headings text="Book a consultation" textClassName="text-white" />
+              <h1
+                data-fx="words"
+                className="unbounded mt-6 text-balance text-[36px] font-bold leading-[102%] tracking-[-0.07em] md:text-[60px] lg:text-[72px]"
+              >
+                Let&apos;s build the future together.
+              </h1>
+            </div>
+            <p data-fx="rise" className="jost max-w-[40ch] text-[18px] leading-[145%] text-white/70 md:text-[21px]">
+              Partner, collaborate, or engage to drive meaningful impact and create
+              lasting value across sectors and communities.
+            </p>
+          </div>
+
+          {/* Channels + form */}
+          <div className="mt-14 grid grid-cols-1 gap-6 md:mt-20 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-8">
+            <ul data-fx="stagger" className="grid min-w-0 grid-cols-1 content-start gap-4 sm:grid-cols-2 lg:grid-cols-1">
               {contactDetails.map((item) => {
                 const Icon = item.icon;
-
+                const external = item.href.startsWith("http");
                 return (
-                  <a key={item.label} href={item.href} className="flex items-center gap-x-3">
-                    <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#F8A308] text-white transition-transform duration-200 group-hover:scale-105">
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <span className="space-y-1">
-                      <span className="jakarta block text-lg sm:text-xl capitalize leading-[115.5%] tracking-[-4%] text-white md:text-2xl lg:text-[25px] lg:tracking-[-8%]">
-                        {item.label}
+                  <li key={item.label} className="min-w-0">
+                    <a
+                      href={item.href}
+                      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className="group flex items-center gap-4 rounded-[24px] border border-white/15 bg-[#0b0a10] p-5 transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#F8A308]/60 md:p-6"
+                    >
+                      <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-[#F8A308] text-black">
+                        <Icon className="size-5" aria-hidden />
                       </span>
-                      <span className="jakarta block text-sm leading-[120%] tracking-normal text-white/40 md:text-[15px] md:tracking-[-2%] lg:leading-[73%] lg:tracking-[-4%]">
-                        {item.value}
+                      <span className="min-w-0 flex-1">
+                        <span className="unbounded block text-[16px] font-semibold tracking-[-0.03em] md:text-[18px]">
+                          {item.label}
+                        </span>
+                        <span className="jost mt-1 block truncate text-[15px] text-white/55">{item.value}</span>
                       </span>
-                    </span>
-                  </a>
+                      <ArrowUpRight
+                        aria-hidden
+                        className="size-5 shrink-0 text-white/40 transition-[color,transform] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#F8A308]"
+                      />
+                    </a>
+                  </li>
                 );
               })}
+            </ul>
+
+            <div
+              id="contact-form"
+              data-fx="rise"
+              className="relative overflow-hidden rounded-[32px] border border-white/15 bg-white/[0.03] p-6 backdrop-blur-xl md:p-10"
+            >
+              <div aria-hidden className="pointer-events-none absolute inset-x-10 top-0 h-px bg-linear-to-r from-transparent via-[#F8A308]/70 to-transparent" />
+              <h2 className="unbounded text-[22px] font-bold tracking-[-0.05em] md:text-[28px]">Send a message</h2>
+              <p className="jost mt-2 text-white/60">Tell me what you need and you&apos;ll get a reply by email.</p>
+              <div className="mt-8">
+                <ContactForm />
+              </div>
             </div>
-          </div>
-          <div
-            id="contact-form"
-            className="p-4 shadow-2xl shadow-black/30 backdrop-blur-xl md:p-6 lg:p-0"
-          >
-            <form className="space-y-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your name"
-                  className="h-12 w-full rounded-none placeholder-jost border border-white/10 bg-black/30 px-4 text-sm text-white outline-none transition placeholder:text-white/30 focus:border-[#F8A308]/70 focus:ring-2 focus:ring-[#F8A308]/20"
-                />
-                <UserIcon className="absolute right-2 top-3 stroke-white/40" />
-              </div>
-              <div className="relative">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="you@example.com"
-                  className="h-12 w-full rounded-none border border-white/10 bg-black/30 px-4 text-sm text-white outline-none transition placeholder:text-white/30 focus:border-[#F8A308]/70 focus:ring-2 focus:ring-[#F8A308]/20"
-                />
-                <MailOpenIcon className="absolute right-2 top-3 stroke-white/40" />
-              </div>
-              <div className="space-y-2 block relative">
-                <textarea
-                  name="message"
-                  rows={6}
-                  placeholder="Your message"
-                  className="resize-none w-full rounded-none border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/30 focus:border-[#F8A308]/70 focus:ring-2 focus:ring-[#F8A308]/20"
-                />
-                <MessageSquareMore className="absolute right-2 top-3 stroke-white/40" />
-              </div>
-              <button
-                type="submit"
-                className="group inline-flex h-14 w-full items-center justify-center gap-3 rounded-full bg-[#F8A308] px-6 text-sm font-semibold text-white jost transition-transform duration-200 hover:-translate-y-0.5"
-              >
-                Send Me a Message
-                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 -rotate-45" />
-              </button>
-            </form>
           </div>
         </div>
       </section>
-      <FooterArc className="bg-transparent!" />
+      <FooterArc />
     </main>
   );
 }

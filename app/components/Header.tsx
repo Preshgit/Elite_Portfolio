@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import MobileNav from "./Navbar";
 import Sidebar from "./Sidebar";
+import { pauseScroll } from "@/lib/scroll";
 
 const navItems = [
   { label: "Home", href: "/", exact: true },
@@ -72,8 +73,8 @@ function Header() {
   }, [isMobileViewport]);
 
   useEffect(() => {
+    pauseScroll(isOpen);
     if (isOpen) {
-      setIsMobileNavVisible(true);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -86,12 +87,17 @@ function Header() {
 
   return (
     <motion.header
+      initial={false}
+      animate={{
+        y: isMobileViewport && !isMobileNavVisible && !isOpen ? "-100%" : 0,
+      }}
       transition={{ duration: 0.25, ease: "easeOut" }}
       className={cn(
-        "fixed top-0 backdrop-blur-3xl left-0 right-0 z-9999999999 w-full bg-transparent",
+        // No full-width strip: only the logo, pill and button float over the page
+        "pointer-events-none fixed top-0 left-0 right-0 z-[1000000] w-full bg-transparent [&_a]:pointer-events-auto [&_button]:pointer-events-auto [&_ul]:pointer-events-auto",
       )}
     >
-      <nav className="flex justify-between max-w-450 px-4 md:px-[3em] py-[2em] lg:py-[1em] items-center  mx-auto">
+      <nav className="gutter mx-auto flex max-w-450 items-center justify-between py-4 lg:py-5">
         <Link href="/">
           <Image
             alt="logo"
@@ -104,7 +110,7 @@ function Header() {
         </Link>
         <MobileNav isOpen={isOpen} setIsOpen={setIsOpen} />
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-        <ul className="z-50 hidden md:flex md:items-center lg:gap-[2em] uppercase border-2 border-black/10 backdrop-blur-3xl   text-[9px] lg:text-[11.76px] drop-shadow-2xl jost bg-black/50 px-3 lg:px-6 py-[1em] lg:py-[1.4em] rounded-full text-white">
+        <ul className="jost z-50 hidden items-center gap-1 rounded-full border border-white/10 bg-[#0a0812]/60 p-1.5 uppercase text-white shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)] backdrop-blur-md md:flex lg:gap-2">
           {navItems.map((item) => {
             const activePaths = [item.href, ...(item.aliases ?? [])];
             const isActive = item.exact
@@ -130,7 +136,7 @@ function Header() {
                 {isActive && (
                   <motion.div
                     layoutId="nav-active-bg"
-                    className="absolute inset-0 bg-white/10 bg-[#CC9933]/20 border-b-2 border-[#cc9933] rounded-full -z-0"
+                    className="absolute inset-0 -z-0 rounded-full border border-[#F8A308]/50 bg-[#F8A308]/15"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
